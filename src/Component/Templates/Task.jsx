@@ -3,20 +3,32 @@ import { data, useNavigate } from "react-router-dom";
 import todo from "../../Images/todo.jpg";
 import { useForm } from "react-hook-form";
 import { TodoContext } from "../Context/Context";
+import { ToastContainer, toast } from "react-toastify";
 const Task = () => {
+  // ##################function for toastify
+
+  const notify = () => {
+    toast("Task Added",{
+      autoClose:900
+    })
+  };
+  // #################functionality for task updation
   const { tasks, settasks } = useContext(TodoContext);
   const navigate = useNavigate();
   const { register, handleSubmit, reset } = useForm();
   const onSubmit = (data) => {
+    console.log(data.Time);
     const newTask = {
       title: data.Title,
       desc: data.Desc,
       time: data.Time,
       line: false,
+      notified: false,
     };
     const updatedTask = [...tasks, newTask];
     settasks(updatedTask);
     reset();
+    notify();
   };
   return (
     <div className="w-screen h-screen bg-[#1f1e24] p-[3%]">
@@ -76,6 +88,10 @@ const Task = () => {
           </button>
         </form>
       </div>
+      {/* ######################TostContainer for Messages / */}
+      <ToastContainer
+      autoClose={900}
+      />
     </div>
   );
 };

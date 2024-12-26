@@ -3,8 +3,11 @@ import { useForm } from "react-hook-form";
 import image from "../../Images/dark-back.jpeg";
 import { Link } from "react-router-dom";
 import { TodoContext } from "../Context/Context";
+import Update from "./Update";
+import { ToastContainer, toast } from "react-toastify";
+
 const TodoHome = () => {
-  const { tasks, settasks } = useContext(TodoContext);
+  const { tasks, settasks, update1, setupdate1 } = useContext(TodoContext);
   const dlttask = (idx) => {
     settasks(tasks.filter((val, i) => i !== idx));
   };
@@ -19,7 +22,7 @@ const TodoHome = () => {
       )
     );
   };
-  return (
+  return update1 ? (
     <div className="w-screen h-screen bg-white">
       {/* // ############for background */}
       <div
@@ -61,12 +64,18 @@ const TodoHome = () => {
                   className="ri-check-double-line text-2xl text-green-500 font-semibold flex justify-center items-center "
                   onClick={() => {
                     compTask(idx);
+                    toast("TaskCompleted", {
+                      autoClose: 700,
+                    });
                   }}
                 ></i>
                 <i
                   className="ri-delete-bin-line text-2xl text-red-500 font-semibold flex justify-center items-center "
                   onClick={() => {
                     dlttask(idx);
+                    toast("TaskDeleted", {
+                      autoClose: 700,
+                    });
                   }}
                 ></i>
                 <div className=" w-[60%] flex flex-col">
@@ -103,6 +112,9 @@ const TodoHome = () => {
           className="text-3xl bg-red-500 px-4 py-[2.5%] rounded-md md:py-[1%] md:px-8"
           onClick={() => {
             settasks([]);
+            toast("TaskReset",{
+              autoClose:700
+            })
           }}
         >
           Reset
@@ -114,7 +126,11 @@ const TodoHome = () => {
           <i className="ri-add-large-fill text-3xl"></i>
         </Link>
       </div>
+      {/* ##############toastcontainer  */}
+      <ToastContainer autoClose={700} />
     </div>
+  ) : (
+    <Update />
   );
 };
 
